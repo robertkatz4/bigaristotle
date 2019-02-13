@@ -2,29 +2,30 @@ import os
 import boto3
 
 session = boto3.session.Session(profile_name=os.environ["AWS_PROFILE"])
-boto3.session.Session().available_profiles
-dynamodb = session.resource('dynamodb', region_name='us-east-1', endpoint_url="https://dynamodb.us-east-1.amazonaws.com:443")
+dynamodb = session.resource('dynamodb',
+                            region_name='us-east-1',
+                            endpoint_url="https://dynamodb.us-east-1.amazonaws.com:443")
 
 
 table = dynamodb.create_table(
-    TableName='Movies',
+    TableName='Scoreboard',
     KeySchema=[
         {
-            'AttributeName': 'year',
+            'AttributeName': 'game_id',
             'KeyType': 'HASH'  #Partition key
         },
         {
-            'AttributeName': 'title',
+            'AttributeName': 'game_date_est',
             'KeyType': 'RANGE'  #Sort key
         }
     ],
     AttributeDefinitions=[
         {
-            'AttributeName': 'year',
-            'AttributeType': 'N'
+            'AttributeName': 'game_id',
+            'AttributeType': 'S'
         },
         {
-            'AttributeName': 'title',
+            'AttributeName': 'game_date_est',
             'AttributeType': 'S'
         },
 
@@ -36,4 +37,3 @@ table = dynamodb.create_table(
 )
 
 print("Table status:", table.table_status)
-
